@@ -28,6 +28,8 @@ jobs:
       - docker/build:
         image: zackfong/test
         tag: << pipeline.git.tag >>
+      - snyk/scan:
+          docker-image-name: zackfong/test
   # Job to build the Docker iamge and push to DockerHub
   docker_build_and_push:
     # executor: docker/docker
