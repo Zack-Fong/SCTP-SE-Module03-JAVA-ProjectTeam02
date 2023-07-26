@@ -10,10 +10,10 @@
 	</parent>
 
 	<groupId>com.sctp.module3-project2</groupId>
-	<artifactId>ProjectHarbourBooking</artifactId>
+	<artifactId>TestDevOps</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>harbourBookingSystem</name>
-	<description>Module 3: Projects</description>
+	<description>Module 4: Devops Project</description>
 	
 	<properties>
 		<java.version>17</java.version>
@@ -25,10 +25,6 @@
     <groupId>com.fasterxml.jackson.core</groupId>
     <artifactId>jackson-databind</artifactId>
 	</dependency>
-
-  		
-
-		<!-- Validation @NotBlank & @Size-->
 		<dependency>
     		<groupId>javax.validation</groupId>
     		<artifactId>validation-api</artifactId>
@@ -52,9 +48,8 @@
 		</dependency>
 
 		<dependency>
-			<groupId>org.postgresql</groupId>
-			<artifactId>postgresql</artifactId>
-			<!-- <scope>runtime</scope> -->
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
 		</dependency>
 
 		<dependency>
