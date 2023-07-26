@@ -18,16 +18,12 @@ jobs:
   snyk_scan:
     docker:
       - image: cimg/openjdk:17.0.7
-    environment:
-      IMAGE_NAME: zackfong/test
     steps:
       - checkout
       - run: mvn clean package
       - setup_remote_docker
       - docker/check
-      - docker/build:
-        image: zackfong/test
-        tag: << pipeline.git.tag >>
+      - run: docker build -t zackfong/test .
       - snyk/scan:
           docker-image-name: zackfong/test
   # Job to build the Docker iamge and push to DockerHub
@@ -39,12 +35,12 @@ jobs:
       - checkout
       - run: mvn clean package
       - setup_remote_docker
-      - docker/build:
-          image: zackfong/test
-          tag: << pipeline.git.tag >>
-      - docker/push:
-          image: zackfong/test
-          tag: << pipeline.git.tag >>
+      - run:
+          name: Build and Push Docker Image
+          command: |
+            docker login -u ${DOCKER_LOGIN} -p ${DOCKER_PASSWORD}
+            docker build -t ${DOCKER_LOGIN}/test:${CIRCLE_SHA1} .
+            docker push ${DOCKER_LOGIN}/test:${CIRCLE_SHA1}
   # Deploy to Heroku
   deploy_to_heroku:
     executor: docker/docker
