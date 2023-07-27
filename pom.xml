@@ -10,9 +10,9 @@
 	</parent>
 
 	<groupId>com.sctp.module3-project2</groupId>
-	<artifactId>TestDevOps</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
-	<name>TestDevOps</name>
+	<artifactId>harbour-booking-api</artifactId>
+	<version>0.0.1</version>
+	<name>harbour-booking-api</name>
 	<description>Module 4: Devops Project</description>
 	
 	<properties>
