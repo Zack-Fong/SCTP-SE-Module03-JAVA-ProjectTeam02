@@ -23,7 +23,7 @@ jobs:
       - run: mvn clean package
       - setup_remote_docker
       - docker/check
-      - run: docker build zackfong/test .
+      - run: docker build -t zackfong/test .
       - snyk/scan:
           docker-image-name: zackfong/test
   # Job to build the Docker iamge and push to DockerHub
