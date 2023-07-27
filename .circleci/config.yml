@@ -19,12 +19,13 @@ jobs:
     docker:
       - image: cimg/openjdk:17.0.7
     steps:
-      - checkout
-      - run: mvn clean package
       - setup_remote_docker
+      - checkout
       - docker/check
-      - run: docker build -t zackfong/test .
-      - snyk/scan:
+      - docker/build:
+          image: zackfong/test
+          tag: << pipeline.git.tag >>
+       - snyk/scan:
           docker-image-name: zackfong/test
   # Job to build the Docker iamge and push to DockerHub
   docker_build_and_push:
