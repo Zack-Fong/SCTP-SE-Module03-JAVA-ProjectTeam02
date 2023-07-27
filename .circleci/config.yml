@@ -19,7 +19,7 @@ jobs:
     docker:
       - image: cimg/openjdk:17.0.7
     environment:
-      IMAGE_NAME: ${DOCKER_LOGIN}/test
+      IMAGE_NAME: zackfong/test
     steps:
       - checkout
       - run: mvn clean package
