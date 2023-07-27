@@ -18,7 +18,6 @@ jobs:
   snyk_scan:
     docker:
       - image: cimg/openjdk:17.0.7
-    executor: docker/docker
     steps:
       - setup_remote_docker
       - checkout
