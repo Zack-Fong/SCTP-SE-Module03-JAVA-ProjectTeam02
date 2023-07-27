@@ -24,7 +24,7 @@ jobs:
       - docker/check
       - docker/build:
           image: zackfong/test
-          tag: << pipeline.git.tag >>xw
+          tag: << pipeline.git.tag >>
   # Job to build the Docker iamge and push to DockerHub
   docker_build_and_push:
     # executor: docker/docker
