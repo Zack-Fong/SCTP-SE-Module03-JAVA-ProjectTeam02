@@ -12,7 +12,7 @@
 	<groupId>com.sctp.module3-project2</groupId>
 	<artifactId>TestDevOps</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>harbourBookingSystem</name>
+	<name>TestDevOps</name>
 	<description>Module 4: Devops Project</description>
 	
 	<properties>
