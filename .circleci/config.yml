@@ -17,14 +17,17 @@ jobs:
   #Job to perform Snyk scan
   snyk_scan:
     docker:
-      - image: cimg/openjdk:17.0.7
+      docker:
+        - image: cimg/openjdk:17.0.7
     steps:
-      - setup_remote_docker
       - checkout
-      - docker/check
-      - docker/build:
-          image: zackfong/test
-          tag: << pipeline.git.tag >>
+      - setup_remote_docker
+      - run:
+          name: Build Docker Image
+          command: |
+            docker login -u ${DOCKER_LOGIN} -p ${DOCKER_PASSWORD}
+            docker build -t ${DOCKER_LOGIN}/test:${CIRCLE_SHA1} .
+            docker push ${DOCKER_LOGIN}/test:${CIRCLE_SHA1}
   # Job to build the Docker iamge and push to DockerHub
   docker_build_and_push:
     # executor: docker/docker
