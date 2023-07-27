@@ -1,7 +1,6 @@
 version: 2.1
 orbs:
   docker: circleci/docker@2.2.0
-  maven: circleci/maven@1.4.1
   snyk: snyk/snyk@1.7.0
   heroku: circleci/heroku@2.0.0
 jobs:
@@ -14,17 +13,22 @@ jobs:
       - run: |
           echo “Running tests...”
           mvn test
+
   #Job to perform Snyk scan
   snyk_scan:
     docker:
       - image: cimg/openjdk:17.0.7
+    environment:
+      IMAGE_NAME: ${DOCKER_LOGIN}/test
     steps:
-      - setup_remote_docker
       - checkout
+      - run: mvn clean package
+      - setup_remote_docker
       - docker/check
-      - run: docker build -t zackfong/test .
-      #  - snyk/scan:
-      #     docker-image-name: zackfong/test
+      - run: docker build -t $IMAGE_NAME .
+      - snyk/scan:
+          docker-image-name: $IMAGE_NAME
+
   # Job to build the Docker iamge and push to DockerHub
   docker_build_and_push:
     # executor: docker/docker
@@ -40,21 +44,25 @@ jobs:
             docker login -u ${DOCKER_LOGIN} -p ${DOCKER_PASSWORD}
             docker build -t ${DOCKER_LOGIN}/test:${CIRCLE_SHA1} .
             docker push ${DOCKER_LOGIN}/test:${CIRCLE_SHA1}
+
   # Deploy to Heroku
   deploy_to_heroku:
-    executor: docker/docker
+    #executor: docker/docker
+    docker:
+      - image: cimg/openjdk:17.0.7
     steps:
       - checkout
+      - run: mvn clean package
       - setup_remote_docker
       - heroku/install
       - run:
           name: Heroku Container Push
           command: |
             heroku container:login
-            heroku container:push web -a test
-            heroku container:release web -a test
+            heroku container:push web -a harbour-booking-api
+            heroku container:release web -a harbour-booking-api
+
 workflows:
-  version: 2
   ci_flow:
     jobs:
       - build_and_test:
@@ -67,15 +75,16 @@ workflows:
           filters:
             branches:
               only: develop
+
   cicd_flow:
     jobs:
       - docker_build_and_push:
           filters:
             branches:
-              only: release
+              only: main
       - deploy_to_heroku:
           requires:
             - docker_build_and_push
           filters:
             branches:
-              only: release
+              only: main
